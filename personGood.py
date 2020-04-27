@@ -1,4 +1,6 @@
 #class for person in pair of  Diffie Hellman Merkel key generation 
+import diffHellMerk as dht
+import random
 
 class personGood:
     
@@ -11,17 +13,46 @@ class personGood:
         - soloVal: `Y` in `Y^x (mod P)`, default of none, which allows one person to decide 
         and send `Y` value to the other personGood
         - modVal: `P` in `Y^x (modP)`, default of none, same reasoning
+        - privKey: chosen secret key for person, never shared outside of class
+        -> diffHell gets access to this, interesting to puzzle out
+        - gennedKey: private key gen'd from strategy pattern use:
+        1) in personGood -rmakeKey(self): return self.dht.makeKey(self)
+        2) in dht - makeKey(self, personGood): return key
+        - dht: class, holds Diffie Hellman Merkle algorithm
         '''
         # __ is private field
         self.__personName = personName
         self.__soloVal = soloVal
         self.__modVal = modVal
         self.__pubShare = None
-        self.__privKey = None
+        self.__privKey =  random.randint(1,100)
+        self.__gennedKey = None
+        self.__dht = dht
 
-    
-    #-------------------@property getters---------------------#
-    
+   
+    def makeShare(self):
+        '''
+        Fxn: makeShare()
+        Does: calls dht.shareKey(self)
+        Params: self
+        Returns: none
+        '''
+        #copy = self.__privKey
+        copy = 3
+        return self.__dht.dht.shareKey(self, copy)
+
+    #-------------------@property getters---------------------# 
+    @property
+    def pubShare(self):
+        '''
+        Fxn: @property pubShare()
+        Does: gets pubShare
+        Params: self
+        Returns: self.__pubShare
+        '''
+        return self.__pubShare
+
+
     @property
     def personName(self):
         '''

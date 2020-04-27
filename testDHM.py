@@ -171,6 +171,28 @@ def testSetters():
     return passVal, testRun
 
 
+def testShareKey():
+    '''
+    Fxn: testModMath()
+    Does: tests modMath class
+    Params: none
+    retunrs: passVal, testRun
+    '''
+    passVal, testRun = 0, 0
+    #set copy in @property pubShare in class personGood to 3 for testing initially
+    # will have to test throughput via an encrypt/decrypt test, not sure how to expose 
+    # __privKey in personGood and keep intent of algorithm otherwise
+    p0 = pg.personGood("bob", 7, 11)
+    p0.makeShare()
+    a0 = p0.pubShare
+    try:
+        assert a0 == 2, "incorrect pubShare gen'd, given 7^priv (mod 11), priv == 3 for test"
+        passVal += 1
+    except AssertionError as e: print(e)
+    testRun += 1
+    
+    return passVal, testRun
+
 def main():
 
     print("Test suite: Diffie Hellman Merkle Project")
@@ -178,7 +200,7 @@ def main():
     testsRun = 0
     passVals = 0
 
-    tests = [peopleBasicTest, testGetters, testSetters]
+    tests = [peopleBasicTest, testGetters, testSetters, testShareKey]
     print("\n\t****Running Tests, in-test alerts:****\n")
     for i in tests:
         rval1, rval2 = i()
